@@ -7,29 +7,52 @@ package br.uffs.cc.jarena;
 
 public class AgentesFortoes extends Agente{
 
+    private boolean fugir;              
+    private int cogumelosX[]; 
+    private int cogumelosY[];    
+    private int numCogumelos; 
+    private int contadordemsg;              
+
 public AgentesFortoes(Integer x, Integer y, Integer energia) {
 	super(x, y, energia);
-	setDirecao(geraDirecaoAleatoria());}
 
-    	
-	public void pensa() {
-		if(!podeMoverPara(getDirecao())) {
-			setDirecao(geraDirecaoAleatoria());
-		}
-		
-		if(podeDividir() && getEnergia() >= 800) {
-			divide();
+    fugir = false;
+    cogumelosX = new int[20];
+    cogumelosY = new int[20];
+    numCogumelos = 0;
+    contadordemsg= 0;
+
+}
+
+
+	public void cerebro() {
+     if (fugir) {
+        int dir = geraDirecaoAleatoria();
+        if (podeMoverPara(dir)) {
+            setDirecao(dir);
+            fugir = false; 
+    }
+    else {
+    para();}
+        return;
+        
 		}
 	}
 	
 	public void recebeuEnergia() {
 	}
 	
-	public void tomouDano(int energiaRestanteInimigo) {
-	}
+	@Override
+    public void tomouDano(int energiaRestanteInimigo) {
+        if (getEnergia() < energiaRestanteInimigo) {
+            fugir = true;
+        } else {
+            fugir = false;
+        }
+    }
 	
 	public void ganhouCombate() {
-        
+
     }
 	
 	public void recebeuMensagem(String msg) {
@@ -38,4 +61,8 @@ public AgentesFortoes(Integer x, Integer y, Integer energia) {
 	public String getEquipe() {
 		return "Agentes Fortoes";
 	}
+
+
+
 }
+

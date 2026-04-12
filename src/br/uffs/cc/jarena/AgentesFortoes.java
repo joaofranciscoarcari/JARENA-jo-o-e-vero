@@ -24,7 +24,6 @@ public AgentesFortoes(Integer x, Integer y, Integer energia) {
 
 }
 
-
 	public void cerebro() {
      if (fugir) {
         int dir = geraDirecaoAleatoria();

@@ -10,7 +10,8 @@ public class AgentesFortoes extends Agente{
     private boolean fugir;              
     private int cogumelosX[]; 
     private int cogumelosY[];    
-    private int numCogumelos;              
+    private int numCogumelos;    
+    private int direcaoAtual;         
 
 
 public AgentesFortoes(Integer x, Integer y, Integer energia) {
@@ -20,6 +21,7 @@ public AgentesFortoes(Integer x, Integer y, Integer energia) {
         cogumelosX = new int[40];
         cogumelosY = new int[40];
         numCogumelos = 0;
+        direcaoAtual = geraDirecaoAleatoria();
 
 }
 
@@ -70,7 +72,8 @@ if (maisProx != -1) {
         }
 
 
-if (getEnergia() > 800 && podeDividir()) {
+
+if (getEnergia() > 600 && podeDividir()) {
         boolean cogumeloperto = false;
         for (int i = 0; i < numCogumelos; i++) {
             int dx = cogumelosX[i] - getX();
@@ -86,8 +89,19 @@ if (getEnergia() > 800 && podeDividir()) {
             return;
         }
         }
-    }
 
+    if (!podeMoverPara(direcaoAtual)) {
+            for (int t = 0; t < 4; t++) {
+                int novaDir = geraDirecaoAleatoria();
+                if (podeMoverPara(novaDir)) {
+                    direcaoAtual = novaDir;
+                    break;
+                }
+            }
+        }
+
+        setDirecao(direcaoAtual);
+}
 
 	public void recebeuEnergia() {
         String msg = getX() + "," + getY();
@@ -120,15 +134,20 @@ if (getEnergia() > 800 && podeDividir()) {
             numCogumelos++;
         }
         }
+ 
+
 	@Override
 	public String getEquipe() {
 		return "Agentes Fortoes";
 	}
 
+
+
     @Override
 	public void ganhouCombate() {
     enviaMensagem("ganhou!!!");
     }
+	
 
 
 }

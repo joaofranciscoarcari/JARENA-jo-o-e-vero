@@ -12,15 +12,18 @@ public class AgentesFortoes extends Agente{
     private int cogumelosY[];    
     private int numCogumelos;              
 
+
 public AgentesFortoes(Integer x, Integer y, Integer energia) {
 	super(x, y, energia);
 
         fugir = false;
-        cogumelosX = new int[20];
-        cogumelosY = new int[20];
+        cogumelosX = new int[40];
+        cogumelosY = new int[40];
         numCogumelos = 0;
 
 }
+
+
 	public void pensa() {
      if (fugir) {
         int dir = geraDirecaoAleatoria();
@@ -66,15 +69,31 @@ if (maisProx != -1) {
             }
         }
 
-if (getEnergia() > 800 && podeDividir()) {
 
+if (getEnergia() > 800 && podeDividir()) {
+        boolean cogumeloperto = false;
+        for (int i = 0; i < numCogumelos; i++) {
+            int dx = cogumelosX[i] - getX();
+            int dy = cogumelosY[i] - getY();
+            double dist = Math.sqrt(dx*dx + dy*dy);
+            if (dist <= 7.0) {
+                cogumeloperto = true;
+                break;
+}
+        }
+        if (cogumeloperto) {
+            divide();
+            return;
+        }
         }
     }
+
 
 	public void recebeuEnergia() {
         String msg = getX() + "," + getY();
 		enviaMensagem(msg);
 	}
+
 	@Override
     public void tomouDano(int energiaRestanteInimigo) {
         if (getEnergia() < energiaRestanteInimigo) {
@@ -83,6 +102,7 @@ if (getEnergia() > 800 && podeDividir()) {
             fugir = false;
         }
     }
+	
 	public void recebeuMensagem(String msg) {
         String[] partes = msg.split(",");
         int x = Integer.parseInt(partes[0]);
@@ -94,7 +114,7 @@ if (getEnergia() > 800 && podeDividir()) {
                 break;
             }
         }
-        if (!existe && numCogumelos < 10) {
+        if (!existe && numCogumelos < 40) {
             cogumelosX[numCogumelos] = x;
             cogumelosY[numCogumelos] = y;
             numCogumelos++;
@@ -109,6 +129,10 @@ if (getEnergia() > 800 && podeDividir()) {
 	public void ganhouCombate() {
     enviaMensagem("ganhou!!!");
     }
-	
+
+
 }
+
+
+
 
